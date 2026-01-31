@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     stages {
-
         stage('Checkout') {
             steps {
                 checkout scm
@@ -12,7 +11,6 @@ pipeline {
         stage('Setup Python Environment') {
             steps {
                 sh '''
-                python3 --version
                 python3 -m venv venv
                 . venv/bin/activate
                 pip install --upgrade pip
@@ -21,13 +19,13 @@ pipeline {
             }
         }
 
-       stage('Run Tests') {
-    steps {
-        sh '. venv/bin/activate && pytest -v ./tests'
-    }
+        stage('Run Tests') {
+            steps {
+                sh '''
+                . venv/bin/activate
+                pytest -v
+                '''
+            }
         }
     }
 }
-
-
-
