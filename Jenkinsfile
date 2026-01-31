@@ -21,14 +21,15 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
-            steps {
-                sh '''
-                . venv/bin/activate
-                pytest
-                '''
+       stage('Run Tests') {
+    steps {
+        sh '''
+        . venv/bin/activate
+        pytest -v ./tests
+        '''
             }
         }
     }
 }
+
 
