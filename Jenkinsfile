@@ -1,17 +1,10 @@
 pipeline {
-    // Use Docker agent
-    agent {
-        docker {
-            image 'python:3.12-slim'
-            args '--network host'  // <-- THIS LINE ensures the container can access GitHub
-        }
-    }
+    agent any
 
     stages {
 
         stage('Checkout') {
             steps {
-                // Checkout your GitHub repository
                 checkout scm
             }
         }
@@ -19,10 +12,11 @@ pipeline {
         stage('Setup Python Environment') {
             steps {
                 sh '''
-                    python -m venv venv
-                    . venv/bin/activate
-                    pip install --upgrade pip
-                    pip install -r requirements.txt
+                python3 --version
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install --upgrade pip
+                pip install -r requirements.txt
                 '''
             }
         }
@@ -30,16 +24,10 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
-                    . venv/bin/activate
-                    pytest
+                . venv/bin/activate
+                pytest
                 '''
             }
-        }
-    }
-
-    post {
-        always {
-            echo 'Pipeline finished'
         }
     }
 }
