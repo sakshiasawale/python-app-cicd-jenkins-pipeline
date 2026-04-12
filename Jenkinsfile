@@ -11,10 +11,10 @@ pipeline {
         stage('Setup Python Environment') {
             steps {
                 bat '''
-                python -m venv venv
+                "C:\\Users\\LENOVO\\AppData\\Local\\Programs\\Python\\Python314\\python.exe" -m venv venv
                 call venv\\Scripts\\activate.bat
-                python -m pip install --upgrade pip
-                pip install -r requirements.txt
+                venv\\Scripts\\python.exe -m pip install --upgrade pip
+                venv\\Scripts\\pip.exe install -r requirements.txt
                 '''
             }
         }
@@ -24,7 +24,7 @@ pipeline {
                 bat '''
                 call venv\\Scripts\\activate.bat
                 set PYTHONPATH=%WORKSPACE%
-                pytest -v --junitxml=results.xml
+                venv\\Scripts\\pytest.exe -v --junitxml=results.xml
                 '''
             }
             post {
