@@ -10,9 +10,9 @@ pipeline {
 
         stage('Setup Python Environment') {
             steps {
-                sh '''
-                python3 -m venv venv
-                . venv/bin/activate
+                bat '''
+                python -m venv venv
+                call venv\\Scripts\\activate
                 pip install --upgrade pip
                 pip install -r requirements.txt
                 '''
@@ -21,11 +21,16 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh '''
-                . venv/bin/activate
-                export PYTHONPATH=$WORKSPACE
-                pytest -v
+                bat '''
+                call venv\\Scripts\\activate
+                set PYTHONPATH=%WORKSPACE%
+                pytest -v --junitxml=results.xml
                 '''
+            }
+            post {
+                always {
+                    junit 'results.xml'
+                }
             }
         }
     }
